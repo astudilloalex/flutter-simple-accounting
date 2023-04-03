@@ -1,0 +1,17 @@
+{
+    "accounts": "Cuentas",
+    "add": "Añadir",
+    "assets": "Activos",
+    "code": "Código",
+    "dashboard": "Panel",
+    "details": "Detalles",
+    "expenses": "Gastos",
+    "incomes": "Ingresos",
+    "liabilities": "Pasivos",
+    "logout": "Cerrar sesión",
+    "name": "Nombre",
+    "patrimony": "Patrimonio",
+    "profile": "Perfil",
+    "search": "Buscar",    
+    "searchAccounts": "Buscar cuentas"    
+}

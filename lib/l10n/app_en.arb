@@ -1,0 +1,17 @@
+{
+    "accounts": "Accounts",
+    "add": "Add",
+    "assets": "Assets",
+    "code": "Code",
+    "dashboard": "Dashboard",
+    "details": "Details",
+    "expenses": "Expenses",
+    "incomes": "Incomes",
+    "liabilities": "Liabilities",
+    "logout": "Logout",
+    "name": "Name",
+    "patrimony": "Patrimony",
+    "profile": "Profile",
+    "search": "Search",    
+    "searchAccounts": "Search accounts"    
+}
