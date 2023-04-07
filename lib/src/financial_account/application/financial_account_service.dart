@@ -15,6 +15,13 @@ class FinancialAccountService {
     );
   }
 
+  Future<void> delete(String id) {
+    return _repository.delete(
+      id,
+      FirebaseAuth.instance.currentUser?.uid ?? '',
+    );
+  }
+
   Future<List<FinancialAccount>> getByType(AccountTypeEnum type) async {
     final List<FinancialAccount> data = await _repository.findByType(
       type,
@@ -24,5 +31,12 @@ class FinancialAccountService {
       (a, b) => a.code.compareTo(b.code),
     );
     return data;
+  }
+
+  Future<FinancialAccount> update(FinancialAccount account) {
+    return _repository.update(
+      account,
+      FirebaseAuth.instance.currentUser?.uid ?? '',
+    );
   }
 }

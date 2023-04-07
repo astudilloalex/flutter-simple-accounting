@@ -4,7 +4,7 @@ import 'package:simple_accounting/src/financial_account/domain/financial_account
 abstract class IFinancialAccountRepository {
   const IFinancialAccountRepository();
 
-  Future<void> delete(String code, String uid);
+  Future<void> delete(String id, String uid);
   Future<List<FinancialAccount>> findAll(String uid);
   Future<List<FinancialAccount>> findByType(AccountTypeEnum type, String uid);
   Future<FinancialAccount> save(FinancialAccount entity, String uid);

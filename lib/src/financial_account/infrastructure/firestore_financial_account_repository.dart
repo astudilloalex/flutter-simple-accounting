@@ -8,9 +8,8 @@ class FirestoreFinancialAccountRepository
   const FirestoreFinancialAccountRepository();
 
   @override
-  Future<void> delete(String code, String uid) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> delete(String id, String uid) {
+    return _collection(uid).doc(id).delete();
   }
 
   @override
@@ -26,21 +25,22 @@ class FirestoreFinancialAccountRepository
         .get()
         .then((value) {
       return value.docs
-          .map((e) => FinancialAccount.fromJson(e.data()))
+          .map((e) => FinancialAccount.fromJson(e.data(), e.id))
           .toList();
     });
   }
 
   @override
   Future<FinancialAccount> save(FinancialAccount entity, String uid) async {
-    await _collection(uid).add(entity.toJson());
-    return entity;
+    final DocumentReference<Map<String, dynamic>> doc =
+        await _collection(uid).add(entity.toJson());
+    return entity.copyWith(id: doc.id);
   }
 
   @override
-  Future<FinancialAccount> update(FinancialAccount entity, String uid) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<FinancialAccount> update(FinancialAccount entity, String uid) async {
+    await _collection(uid).doc(entity.id).update(entity.toJson());
+    return entity;
   }
 
   CollectionReference<Map<String, dynamic>> _collection(String uid) {

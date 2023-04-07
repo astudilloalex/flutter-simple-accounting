@@ -1,0 +1,3 @@
+class AccountingSeat {
+  const AccountingSeat();
+}

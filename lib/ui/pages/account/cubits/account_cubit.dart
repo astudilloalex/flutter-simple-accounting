@@ -14,24 +14,36 @@ class AccountCubit extends Cubit<Account> {
   String accountName = '';
 
   Future<void> load() async {
-    final List<FinancialAccount> accounts =
-        await _service.getByType(state.filterAccountType);
-    emit(
-      state.copyWith(
-        accounts: accounts,
-      ),
-    );
+    emit(state.copyWith(loading: true));
+    try {
+      final List<FinancialAccount> accounts =
+          await _service.getByType(state.filterAccountType);
+      emit(
+        state.copyWith(
+          accounts: accounts,
+          loading: false,
+        ),
+      );
+    } on Exception {
+      emit(state.copyWith(loading: false));
+    }
   }
 
   Future<void> changeAccountType(AccountTypeEnum type) async {
     if (state.filterAccountType == type) return;
-    final List<FinancialAccount> accounts = await _service.getByType(type);
-    emit(
-      state.copyWith(
-        accounts: accounts,
-        filterAccountType: type,
-      ),
-    );
+    emit(state.copyWith(loading: true));
+    try {
+      final List<FinancialAccount> accounts = await _service.getByType(type);
+      emit(
+        state.copyWith(
+          accounts: accounts,
+          filterAccountType: type,
+          loading: false,
+        ),
+      );
+    } on Exception {
+      emit(state.copyWith(loading: false));
+    }
   }
 
   void changeTypeForAdd(AccountTypeEnum? type) {
@@ -39,8 +51,50 @@ class AccountCubit extends Cubit<Account> {
     emit(state.copyWith(typeForAdd: type));
   }
 
+  Future<String?> deleteAccount(String? id) async {
+    try {
+      emit(state.copyWith(loading: true));
+      await _service.delete(id ?? '');
+      state.accounts.removeWhere((element) => element.id == id);
+      emit(state.copyWith(accounts: state.accounts));
+    } on Exception catch (e) {
+      return e.toString();
+    } finally {
+      emit(state.copyWith(loading: false));
+    }
+    return null;
+  }
+
+  Future<String?> updateAccount(String? id) async {
+    if (id == null) return null;
+    final FinancialAccount account = FinancialAccount(
+      active: state.accountActive,
+      id: id,
+      code: accountCode,
+      name: accountName,
+      accountType: state.typeForAdd,
+    );
+    try {
+      emit(state.copyWith(loading: true));
+      await _service.update(account);
+      if (state.typeForAdd == state.filterAccountType) {
+        final int index = state.accounts.indexWhere((acc) => acc.id == id);
+        if (index >= 0) {
+          state.accounts[index] = account;
+          emit(state.copyWith(accounts: state.accounts));
+        }
+      }
+    } on Exception catch (e) {
+      return e.toString();
+    } finally {
+      emit(state.copyWith(loading: false));
+    }
+    return null;
+  }
+
   Future<String?> addAccount() async {
     try {
+      emit(state.copyWith(loading: true));
       final FinancialAccount account = FinancialAccount(
         code: accountCode,
         name: accountName,
@@ -53,7 +107,14 @@ class AccountCubit extends Cubit<Account> {
       }
     } on Exception catch (e) {
       return e.toString();
+    } finally {
+      emit(state.copyWith(loading: false));
     }
     return null;
+  }
+
+  void changeActive({bool? active}) {
+    if (active == null) return;
+    emit(state.copyWith(accountActive: active));
   }
 }

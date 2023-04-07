@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:simple_accounting/ui/pages/account/cubits/account_cubit.dart';
+import 'package:simple_accounting/ui/pages/account/widgets/account_seacrh_delegate.dart';
 import 'package:simple_accounting/ui/pages/account/widgets/filter_account_dialog.dart';
 
 class AccountAppBar extends StatelessWidget {
@@ -14,7 +17,14 @@ class AccountAppBar extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
           title: Text(localizations.searchAccounts),
-          onTap: () {},
+          onTap: () {
+            showSearch(
+              context: context,
+              delegate: AccountSearchDelegate(
+                context.read<AccountCubit>().state.accounts,
+              ),
+            );
+          },
           minLeadingWidth: 0.0,
           leading: const Icon(Icons.search_outlined),
           shape: RoundedRectangleBorder(

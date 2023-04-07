@@ -53,9 +53,10 @@ class FilterAccountDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _changeType(BuildContext context, AccountTypeEnum? type) async {
+  void _changeType(BuildContext context, AccountTypeEnum? type) {
     if (type == null) return;
-    await context.read<AccountCubit>().changeAccountType(type);
-    if (context.mounted) context.pop();
+    context.read<AccountCubit>().changeAccountType(type);
+    context.read<AccountCubit>().changeTypeForAdd(type);
+    context.pop();
   }
 }

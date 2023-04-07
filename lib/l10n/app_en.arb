@@ -1,17 +1,25 @@
 {
     "accounts": "Accounts",
+    "active": "Active",
     "add": "Add",
+    "addMovement": "Add movement",
+    "areYouSureToDelete": "Are you sure to delete?",
     "assets": "Assets",
     "code": "Code",
     "dashboard": "Dashboard",
+    "delete": "Delete",
     "details": "Details",
+    "edit": "Edit",
     "expenses": "Expenses",
+    "inactive": "Inactive",
     "incomes": "Incomes",
     "liabilities": "Liabilities",
     "logout": "Logout",
     "name": "Name",
+    "no": "No",
     "patrimony": "Patrimony",
     "profile": "Profile",
     "search": "Search",    
-    "searchAccounts": "Search accounts"    
+    "searchAccounts": "Search accounts",
+    "yes": "Yes"
 }

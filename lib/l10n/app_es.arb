@@ -1,17 +1,25 @@
 {
     "accounts": "Cuentas",
+    "active": "Activo/a",
     "add": "Añadir",
+    "addMovement": "Añadir movimiento",
+    "areYouSureToDelete": "¿Está seguro/a de eliminar?",
     "assets": "Activos",
     "code": "Código",
     "dashboard": "Panel",
+    "delete": "Borrar",
     "details": "Detalles",
+    "edit": "Editar",
     "expenses": "Gastos",
+    "inactive": "Inactivo/a",
     "incomes": "Ingresos",
     "liabilities": "Pasivos",
     "logout": "Cerrar sesión",
     "name": "Nombre",
+    "no": "No",
     "patrimony": "Patrimonio",
     "profile": "Perfil",
     "search": "Buscar",    
-    "searchAccounts": "Buscar cuentas"    
+    "searchAccounts": "Buscar cuentas",  
+    "yes": "Si"  
 }
