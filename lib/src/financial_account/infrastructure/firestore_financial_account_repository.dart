@@ -25,16 +25,17 @@ class FirestoreFinancialAccountRepository
         .get()
         .then((value) {
       return value.docs
-          .map((e) => FinancialAccount.fromJson(e.data(), e.id))
+          .map((e) => FinancialAccount.fromJson(e.data()))
           .toList();
     });
   }
 
   @override
   Future<FinancialAccount> save(FinancialAccount entity, String uid) async {
-    final DocumentReference<Map<String, dynamic>> doc =
-        await _collection(uid).add(entity.toJson());
-    return entity.copyWith(id: doc.id);
+    final DocumentReference<Map<String, dynamic>> doc = _collection(uid).doc();
+    final FinancialAccount saved = entity.copyWith(id: doc.id);
+    await _collection(uid).doc(doc.id).set(saved.toJson());
+    return saved;
   }
 
   @override

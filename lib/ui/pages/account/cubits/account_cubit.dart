@@ -95,12 +95,13 @@ class AccountCubit extends Cubit<Account> {
   Future<String?> addAccount() async {
     try {
       emit(state.copyWith(loading: true));
-      final FinancialAccount account = FinancialAccount(
-        code: accountCode,
-        name: accountName,
-        accountType: state.typeForAdd,
+      final FinancialAccount account = await _service.add(
+        FinancialAccount(
+          code: accountCode,
+          name: accountName,
+          accountType: state.typeForAdd,
+        ),
       );
-      await _service.add(account);
       if (state.typeForAdd == state.filterAccountType) {
         state.accounts.add(account);
         emit(state.copyWith(accounts: state.accounts));

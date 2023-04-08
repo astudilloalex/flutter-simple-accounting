@@ -31,7 +31,7 @@ class FinancialAccount {
     );
   }
 
-  factory FinancialAccount.fromJson(Map<String, dynamic> json, String id) {
+  factory FinancialAccount.fromJson(Map<String, dynamic> json) {
     final AccountTypeEnum type = AccountTypeEnum.values.firstWhere(
       (element) => (json['accountType'] as int) == element.id,
     );
@@ -39,7 +39,7 @@ class FinancialAccount {
       active: (json['active'] as bool?) ?? true,
       accountType: type,
       code: json['code'] as String,
-      id: id,
+      id: json['id'] as String?,
       name: json['name'] as String,
     );
   }
@@ -48,6 +48,7 @@ class FinancialAccount {
     return {
       'active': active,
       'code': code,
+      'id': id,
       'name': name,
       'accountType': accountType.id,
     };

@@ -1,3 +1,3 @@
-class AccountingSeat {
-  const AccountingSeat();
+class AccountingSeatData {
+  const AccountingSeatData();
 }
