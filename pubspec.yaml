@@ -34,6 +34,7 @@ dependencies:
   firebase_core: ^2.8.0
   firebase_ui_auth: ^1.1.17
   firebase_ui_oauth_google: ^1.0.24
+  fl_chart: ^0.61.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2

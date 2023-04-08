@@ -13,6 +13,7 @@
     "date": "Fecha",
     "debit": "Debe",
     "delete": "Borrar",
+    "description": "Descripción",
     "details": "Detalles",
     "edit": "Editar",
     "expenses": "Gastos",

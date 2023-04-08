@@ -13,6 +13,7 @@
     "date": "Date",
     "debit": "Debit",
     "delete": "Delete",
+    "description": "Description",
     "details": "Details",
     "edit": "Edit",
     "expenses": "Expenses",

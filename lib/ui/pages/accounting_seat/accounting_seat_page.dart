@@ -9,6 +9,7 @@ import 'package:simple_accounting/ui/pages/accounting_seat/cubits/accounting_sea
 import 'package:simple_accounting/ui/pages/accounting_seat/widgets/account_detail_tile.dart';
 import 'package:simple_accounting/ui/pages/accounting_seat/widgets/account_footer.dart';
 import 'package:simple_accounting/ui/pages/accounting_seat/widgets/add_account_detail_dialog.dart';
+import 'package:simple_accounting/ui/pages/home/cubits/home_cubit.dart';
 
 class AccountingSeatPage extends StatefulWidget {
   const AccountingSeatPage({super.key});
@@ -21,9 +22,11 @@ class _AccountingSeatPageState extends State<AccountingSeatPage> {
   final List<AccountingSeatDetail> details = [];
   DateTime date = DateTime.now();
   AccountTypeEnum type = AccountTypeEnum.incomes;
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   void dispose() {
+    descriptionController.dispose();
     super.dispose();
   }
 
@@ -50,31 +53,34 @@ class _AccountingSeatPageState extends State<AccountingSeatPage> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: () async {
-                      showDatePicker(
-                        context: context,
-                        initialDate: date,
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(DateTime.now().year + 10),
-                      ).then((dateValue) {
-                        if (dateValue != null) {
-                          showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.fromDateTime(date),
-                          ).then((value) {
-                            setState(() {
-                              date = DateTime(
-                                dateValue.year,
-                                dateValue.month,
-                                dateValue.day,
-                                value?.hour ?? date.hour,
-                                value?.minute ?? date.minute,
-                              );
-                            });
-                          });
-                        }
-                      });
-                    },
+                    onPressed:
+                        context.watch<AccountingSeatCubit>().state.loading
+                            ? null
+                            : () async {
+                                showDatePicker(
+                                  context: context,
+                                  initialDate: date,
+                                  firstDate: DateTime(2020),
+                                  lastDate: DateTime(DateTime.now().year + 10),
+                                ).then((dateValue) {
+                                  if (dateValue != null) {
+                                    showTimePicker(
+                                      context: context,
+                                      initialTime: TimeOfDay.fromDateTime(date),
+                                    ).then((value) {
+                                      setState(() {
+                                        date = DateTime(
+                                          dateValue.year,
+                                          dateValue.month,
+                                          dateValue.day,
+                                          value?.hour ?? date.hour,
+                                          value?.minute ?? date.minute,
+                                        );
+                                      });
+                                    });
+                                  }
+                                });
+                              },
                     child:
                         Text(DateFormat('MMM dd, yyyy - HH:mm').format(date)),
                   ),
@@ -112,10 +118,24 @@ class _AccountingSeatPageState extends State<AccountingSeatPage> {
                       ),
                     ],
                     value: type,
-                    onChanged: (value) {
-                      if (value == null) return;
-                      setState(() => type = value);
-                    },
+                    onChanged:
+                        context.watch<AccountingSeatCubit>().state.loading
+                            ? null
+                            : (value) {
+                                if (value == null) return;
+                                setState(() => type = value);
+                              },
+                  ),
+                  const SizedBox(height: 10.0),
+                  // Input description.
+                  TextField(
+                    controller: descriptionController,
+                    maxLength: 300,
+                    decoration: InputDecoration(
+                      labelText: localizations.description,
+                    ),
+                    minLines: 3,
+                    maxLines: 3,
                   ),
                   const SizedBox(height: 10.0),
                   // Accounts
@@ -128,30 +148,37 @@ class _AccountingSeatPageState extends State<AccountingSeatPage> {
                   ),
                   Center(
                     child: ElevatedButton.icon(
-                      onPressed: () async {
-                        final AccountingSeatDetail? detail =
-                            await showDialog<AccountingSeatDetail?>(
-                          context: context,
-                          builder: (context) => const AddAccountDetailDialog(),
-                        );
-                        if (detail != null &&
-                            details.indexWhere(
-                                  (element) =>
-                                      element.account.id == detail.account.id,
-                                ) ==
-                                -1) {
-                          setState(() {
-                            details.add(detail);
-                          });
-                        } else if (context.mounted && detail != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content:
-                                  Text(localizations.accountWithSameCodeExists),
-                            ),
-                          );
-                        }
-                      },
+                      onPressed: context
+                              .watch<AccountingSeatCubit>()
+                              .state
+                              .loading
+                          ? null
+                          : () async {
+                              final AccountingSeatDetail? detail =
+                                  await showDialog<AccountingSeatDetail?>(
+                                context: context,
+                                builder: (context) =>
+                                    const AddAccountDetailDialog(),
+                              );
+                              if (detail != null &&
+                                  details.indexWhere(
+                                        (element) =>
+                                            element.account.id ==
+                                            detail.account.id,
+                                      ) ==
+                                      -1) {
+                                setState(() {
+                                  details.add(detail);
+                                });
+                              } else if (context.mounted && detail != null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(localizations
+                                        .accountWithSameCodeExists),
+                                  ),
+                                );
+                              }
+                            },
                       icon: const Icon(Icons.add_outlined),
                       label: Text(localizations.add),
                     ),
@@ -174,15 +201,23 @@ class _AccountingSeatPageState extends State<AccountingSeatPage> {
             if (details.isNotEmpty)
               AccountFooter(
                 details: details,
-                onSave: () {
-                  context.read<AccountingSeatCubit>().addSeat(
-                        AccountingSeat(
-                          date: date,
-                          accountDetails: details,
-                          type: type,
-                        ),
-                      );
-                },
+                onSave: context.watch<AccountingSeatCubit>().state.loading
+                    ? null
+                    : () {
+                        context
+                            .read<AccountingSeatCubit>()
+                            .addSeat(
+                              AccountingSeat(
+                                date: date,
+                                accountDetails: details,
+                                type: type,
+                                description: descriptionController.text.trim(),
+                              ),
+                            )
+                            .then((value) {
+                          context.read<HomeCubit>().changeTab(0);
+                        });
+                      },
               ),
           ],
         ),

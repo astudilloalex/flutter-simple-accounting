@@ -10,7 +10,15 @@ class AccountingSeatCubit extends Cubit<AccountingSeatData> {
   final AccountingSeatService _service = getIt<AccountingSeatService>();
 
   Future<String?> addSeat(AccountingSeat seat) async {
-    await _service.add(seat);
+    try {
+      emit(state.copyWith(loading: true));
+      await _service.add(seat);
+    } on Exception catch (e) {
+      return e.toString();
+    } finally {
+      emit(state.copyWith(loading: false));
+    }
+
     return null;
   }
 }

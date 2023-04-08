@@ -1,7 +1,9 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:simple_accounting/src/accounting_seat_detail/domain/accounting_seat_detail.dart';
+import 'package:simple_accounting/ui/pages/accounting_seat/cubits/accounting_seat_cubit.dart';
 
 class AccountFooter extends StatelessWidget {
   const AccountFooter({super.key, required this.details, this.onSave});
@@ -54,7 +56,13 @@ class AccountFooter extends StatelessWidget {
         ElevatedButton.icon(
           onPressed: totalDebit.compareTo(totalCredit) == 0 ? onSave : null,
           label: Text(localizations.save),
-          icon: const Icon(Icons.save_outlined),
+          icon: context.watch<AccountingSeatCubit>().state.loading
+              ? const SizedBox(
+                  width: 18.0,
+                  height: 18.0,
+                  child: CircularProgressIndicator.adaptive(),
+                )
+              : const Icon(Icons.save_outlined),
         ),
       ],
     );
