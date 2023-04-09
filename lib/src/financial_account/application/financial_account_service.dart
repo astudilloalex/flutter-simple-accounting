@@ -22,10 +22,14 @@ class FinancialAccountService {
     );
   }
 
-  Future<List<FinancialAccount>> getByType(AccountTypeEnum type) async {
+  Future<List<FinancialAccount>> getByType(
+    AccountTypeEnum type, {
+    bool? active,
+  }) async {
     final List<FinancialAccount> data = await _repository.findByType(
       type,
       FirebaseAuth.instance.currentUser?.uid ?? '',
+      active: active,
     );
     data.sort(
       (a, b) => a.code.compareTo(b.code),

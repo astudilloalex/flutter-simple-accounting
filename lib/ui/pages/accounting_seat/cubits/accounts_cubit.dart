@@ -10,6 +10,6 @@ class AccountsCubit extends Cubit<List<FinancialAccount>> {
   final FinancialAccountService _service = getIt<FinancialAccountService>();
 
   Future<void> loadByType(AccountTypeEnum type) async {
-    emit(await _service.getByType(type));
+    emit(await _service.getByType(type, active: true));
   }
 }

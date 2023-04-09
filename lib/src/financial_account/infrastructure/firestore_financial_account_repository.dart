@@ -13,13 +13,28 @@ class FirestoreFinancialAccountRepository
   }
 
   @override
-  Future<List<FinancialAccount>> findAll(String uid) {
+  Future<List<FinancialAccount>> findAll(String uid, {bool? active}) {
     // TODO: implement findAll
     throw UnimplementedError();
   }
 
   @override
-  Future<List<FinancialAccount>> findByType(AccountTypeEnum type, String uid) {
+  Future<List<FinancialAccount>> findByType(
+    AccountTypeEnum type,
+    String uid, {
+    bool? active,
+  }) {
+    if (active != null) {
+      return _collection(uid)
+          .where('accountType', isEqualTo: type.id)
+          .where('active', isEqualTo: active)
+          .get()
+          .then((value) {
+        return value.docs
+            .map((e) => FinancialAccount.fromJson(e.data()))
+            .toList();
+      });
+    }
     return _collection(uid)
         .where('accountType', isEqualTo: type.id)
         .get()
