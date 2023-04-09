@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:simple_accounting/app/services/get_it_service.dart';
 import 'package:simple_accounting/ui/pages/account/cubits/account_cubit.dart';
+import 'package:simple_accounting/ui/pages/dashboard/cubits/dashboard_cubit.dart';
 import 'package:simple_accounting/ui/pages/home/cubits/home_cubit.dart';
 import 'package:simple_accounting/ui/pages/profile/cubits/profile_cubit.dart';
 import 'package:simple_accounting/ui/routes/route_page.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AccountCubit()..load()),
+        BlocProvider(create: (context) => DashboardCubit()),
         BlocProvider(create: (context) => HomeCubit()..load()),
         BlocProvider(create: (context) => ProfileCubit()..load()),
       ],

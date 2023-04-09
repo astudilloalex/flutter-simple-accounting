@@ -1,4 +1,7 @@
 import 'package:get_it/get_it.dart';
+import 'package:simple_accounting/src/account_summary/application/account_summary_service.dart';
+import 'package:simple_accounting/src/account_summary/domain/account_summary_repository.dart';
+import 'package:simple_accounting/src/account_summary/infrastructure/firebase_account_summary_repository.dart';
 import 'package:simple_accounting/src/accounting_seat/application/accounting_seat_service.dart';
 import 'package:simple_accounting/src/accounting_seat/domain/accounting_seat_repository.dart';
 import 'package:simple_accounting/src/accounting_seat/infrastructure/firestore_accounting_seat_repository.dart';
@@ -20,6 +23,9 @@ void setUpGetIt() {
   getIt.registerSingleton<IAccountingSeatRepository>(
     const FirestoreAccountingSeatRepository(),
   );
+  getIt.registerSingleton<IAccountSummaryRepository>(
+    const FirebaseAccountSummaryRepository(),
+  );
   // Lazy singletons
   getIt.registerLazySingleton<AuthService>(
     () => AuthService(getIt<IAuthRepository>()),
@@ -33,6 +39,11 @@ void setUpGetIt() {
   getIt.registerFactory<AccountingSeatService>(
     () => AccountingSeatService(
       getIt<IAccountingSeatRepository>(),
+    ),
+  );
+  getIt.registerFactory<AccountSummaryService>(
+    () => AccountSummaryService(
+      getIt<IAccountSummaryRepository>(),
     ),
   );
 }
