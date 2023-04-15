@@ -35,10 +35,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => AccountCubit()..load()),
-        BlocProvider(create: (context) => DashboardCubit()),
-        BlocProvider(create: (context) => HomeCubit()..load()),
-        BlocProvider(create: (context) => ProfileCubit()..load()),
+        BlocProvider<AccountCubit>(create: (context) => AccountCubit()..load()),
+        BlocProvider<DashboardCubit>(create: (context) => DashboardCubit()),
+        BlocProvider<HomeCubit>(create: (context) => HomeCubit()..load()),
+        BlocProvider<ProfileCubit>(create: (context) => ProfileCubit()..load()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

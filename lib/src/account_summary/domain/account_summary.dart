@@ -1,5 +1,3 @@
-import 'package:simple_accounting/ui/pages/account/cubits/account.dart';
-
 class AccountSummary {
   const AccountSummary({
     this.credit = '0.0',

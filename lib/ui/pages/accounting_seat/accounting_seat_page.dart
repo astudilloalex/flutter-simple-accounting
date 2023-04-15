@@ -173,8 +173,9 @@ class _AccountingSeatPageState extends State<AccountingSeatPage> {
                               } else if (context.mounted && detail != null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(localizations
-                                        .accountWithSameCodeExists),
+                                    content: Text(
+                                      localizations.accountWithSameCodeExists,
+                                    ),
                                   ),
                                 );
                               }

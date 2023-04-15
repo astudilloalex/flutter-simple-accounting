@@ -9,6 +9,25 @@ class FirestoreAccountingSeatRepository implements IAccountingSeatRepository {
   const FirestoreAccountingSeatRepository();
 
   @override
+  Future<List<AccountingSeat>> findByDates(
+    String uid, {
+    required DateTime startDate,
+    required DateTime endDate,
+  }) {
+    return _collection(uid)
+        .where('date', isGreaterThanOrEqualTo: startDate)
+        .where(
+          'date',
+          isLessThanOrEqualTo: endDate,
+        )
+        .get()
+        .then(
+          (value) =>
+              value.docs.map((e) => AccountingSeat.fromJson(e.data())).toList(),
+        );
+  }
+
+  @override
   Future<AccountingSeat> save(AccountingSeat entity, String uid) async {
     final List<AccountingSeatDetail> details = [];
     AccountingSeat saved = AccountingSeat(date: DateTime.now());

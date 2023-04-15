@@ -5,6 +5,9 @@ import 'package:simple_accounting/src/account_summary/infrastructure/firebase_ac
 import 'package:simple_accounting/src/accounting_seat/application/accounting_seat_service.dart';
 import 'package:simple_accounting/src/accounting_seat/domain/accounting_seat_repository.dart';
 import 'package:simple_accounting/src/accounting_seat/infrastructure/firestore_accounting_seat_repository.dart';
+import 'package:simple_accounting/src/accounting_seat_detail/application/accounting_seat_detail_service.dart';
+import 'package:simple_accounting/src/accounting_seat_detail/domain/accounting_seat_detail_repository.dart';
+import 'package:simple_accounting/src/accounting_seat_detail/infrastructure/firestore_seat_detail_repository.dart';
 import 'package:simple_accounting/src/auth/application/auth_service.dart';
 import 'package:simple_accounting/src/auth/domain/auth_repository.dart';
 import 'package:simple_accounting/src/auth/infrastructure/firebase_auth_repository.dart';
@@ -23,6 +26,9 @@ void setUpGetIt() {
   getIt.registerSingleton<IAccountingSeatRepository>(
     const FirestoreAccountingSeatRepository(),
   );
+  getIt.registerSingleton<IAccountingSeatDetailRepository>(
+    const FirestoreSeatDetailRepository(),
+  );
   getIt.registerSingleton<IAccountSummaryRepository>(
     const FirebaseAccountSummaryRepository(),
   );
@@ -39,6 +45,11 @@ void setUpGetIt() {
   getIt.registerFactory<AccountingSeatService>(
     () => AccountingSeatService(
       getIt<IAccountingSeatRepository>(),
+    ),
+  );
+  getIt.registerFactory<AccountingSeatDetailService>(
+    () => AccountingSeatDetailService(
+      getIt<IAccountingSeatDetailRepository>(),
     ),
   );
   getIt.registerFactory<AccountSummaryService>(

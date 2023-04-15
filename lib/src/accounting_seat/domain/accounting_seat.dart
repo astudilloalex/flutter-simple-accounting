@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:simple_accounting/src/accounting_seat_detail/domain/accounting_seat_detail.dart';
 import 'package:simple_accounting/src/financial_account/domain/account_type_enum.dart';
 
@@ -37,13 +38,15 @@ class AccountingSeat {
   }
 
   factory AccountingSeat.fromJson(Map<String, dynamic> json) {
-    final DateTime? date = DateTime.tryParse(json['date'].toString());
+    final DateTime date = DateTime.fromMillisecondsSinceEpoch(
+      (json['date'] as Timestamp).seconds * 1000,
+    );
     final AccountTypeEnum type = AccountTypeEnum.values.firstWhere(
       (e) => e.id == json['type'] as int,
       orElse: () => AccountTypeEnum.assets,
     );
     return AccountingSeat(
-      date: date ?? DateTime.now(),
+      date: date,
       description: json['description'] as String?,
       id: json['id'] as String?,
       total: json['total'] as String,

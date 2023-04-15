@@ -5,6 +5,7 @@ import 'package:simple_accounting/ui/pages/account/account_page.dart';
 import 'package:simple_accounting/ui/pages/accounting_seat/accounting_seat_page.dart';
 import 'package:simple_accounting/ui/pages/accounting_seat/cubits/accounting_seat_cubit.dart';
 import 'package:simple_accounting/ui/pages/dashboard/dashboard_page.dart';
+import 'package:simple_accounting/ui/pages/detail/cubits/detail_cubit.dart';
 import 'package:simple_accounting/ui/pages/detail/detail_page.dart';
 import 'package:simple_accounting/ui/pages/home/cubits/home_cubit.dart';
 import 'package:simple_accounting/ui/pages/profile/profile_page.dart';
@@ -17,7 +18,10 @@ class HomePage extends StatelessWidget {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     final List<Widget> tabs = [
       const DashboardPage(),
-      const DetailPage(),
+      BlocProvider<DetailCubit>(
+        create: (context) => DetailCubit()..load(),
+        child: const DetailPage(),
+      ),
       BlocProvider(
         create: (_) => AccountingSeatCubit(),
         child: const AccountingSeatPage(),

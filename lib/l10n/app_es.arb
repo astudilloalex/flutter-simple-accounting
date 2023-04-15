@@ -25,11 +25,13 @@
     "movementType": "Tipo de movimiento",
     "name": "Nombre",
     "no": "No",
+    "noResults": "Ho hay resultados",
     "patrimony": "Patrimonio",
     "profile": "Perfil",
     "save": "Guardar",
     "search": "Buscar", 
     "searchAccounts": "Buscar cuentas",  
     "selectAnAccount": "Selecciona una cuenta",
+    "total": "Total",
     "yes": "Si"  
 }
